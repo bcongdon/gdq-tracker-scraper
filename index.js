@@ -22,6 +22,10 @@ function getBidIndex(cb) {
     });
 }
 
+function parseAmount(amt) {
+  return parseFloat(amt.slice(1));
+}
+
 function getBidDetail(ref, cb) {
   scraperjs.StaticScraper.create('https://gamesdonequick.com/tracker/bid/' + ref)
     .scrape(function($) {
@@ -42,7 +46,7 @@ function getBidDetail(ref, cb) {
       data = data.map(function(d){
         var payload = {
           name: d[0],
-          amount: d[2]
+          amount: parseAmount(d[2])
         }
         if(d[1]) payload.date = Date.parse(d[1]);
         if(d.length > 3) payload.link = d.pop()
@@ -53,9 +57,9 @@ function getBidDetail(ref, cb) {
         type: type,
         data: data,
         bid: info[1],
-        total: info[3]
+        total: parseAmount(info[3])
       }
-      if(info.length > 5) payload.goal = info[5];
+      if(info.length > 5) payload.goal = parseAmount(info[5]);
       return payload;
     })
     .then(function(data) {
