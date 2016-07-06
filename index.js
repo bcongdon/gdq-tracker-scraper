@@ -3,9 +3,14 @@ var Promise = require('promise');
 
 var exports = module.exports;
 
-exports.getBidIndex = function() {
+function parseAmount(amt) {
+  if(!amt) return 0
+  return parseFloat(amt.slice(1).replace(",",""));
+}
+
+exports.getBidIndex = function(event) {
   return new Promise(function(resolve, reject) {
-    scraperjs.StaticScraper.create('https://gamesdonequick.com/tracker/bids/sgdq2016')
+    scraperjs.StaticScraper.create('https://gamesdonequick.com/tracker/bids/' + event)
       .scrape(function($) {
         return $("table").first().children('tr:not([style^="display"])').map(function() {
           var data = $(this).children().map(function() {
@@ -30,11 +35,6 @@ exports.getBidIndex = function() {
   });
 }
 
-function parseAmount(amt) {
-  if(!amt) return 0
-  return parseFloat(amt.slice(1).replace(",",""));
-}
-
 exports.getBidDetail = function(ref) {
   return new Promise(function(resolve, reject) {
     scraperjs.StaticScraper.create('https://gamesdonequick.com/tracker/bid/' + ref)
@@ -49,10 +49,10 @@ exports.getBidDetail = function(ref) {
           }
           return [data]
         }).get()
-        var type = BID_TYPE.UNKNOWN;
+        var type = exports.BID_TYPE.UNKNOWN;
         if(data[0][0] == 'Description' || data[0][0] == 'Owners') data = data.slice(2)
-        if(data[0][0] == 'Name') type = BID_TYPE.CHOICE;
-        if(data[0][0] == 'NameAscDsc') type = BID_TYPE.GOAL;
+        if(data[0][0] == 'Name') type = exports.BID_TYPE.CHOICE;
+        if(data[0][0] == 'NameAscDsc') type = exports.BID_TYPE.GOAL;
         data = data.slice(1)
         data = data.map(function(d){
           var payload = {
@@ -82,14 +82,9 @@ exports.getBidDetail = function(ref) {
   });
 }
 
-var BID_TYPE = {
+exports.BID_TYPE = {
   UNKNOWN: 'UNKNOWN',
   GOAL: 'GOAL',
   CHOICE: 'CHOICE',
 }
 
-exports.getBidIndex().then(function(j){
-  console.log(j)
-})
-
-exports.getBidDetail(4570).then(console.log)
