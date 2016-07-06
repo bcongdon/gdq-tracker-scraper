@@ -23,6 +23,7 @@ function getBidIndex(cb) {
 }
 
 function parseAmount(amt) {
+  if(!amt) return 0
   return parseFloat(amt.slice(1));
 }
 
@@ -40,9 +41,10 @@ function getBidDetail(ref, cb) {
         return [data]
       }).get()
       var type = BID_TYPE.UNKNOWN;
-      if(data[2][0] == 'Name') type = BID_TYPE.CHOICE;
-      if(data[2][0] == 'NameAscDsc') type = BID_TYPE.GOAL;
-      data = data.slice(3);
+      if(data[0][0] == 'Description' || data[0][0] == 'Owners') data = data.slice(2)
+      if(data[0][0] == 'Name') type = BID_TYPE.CHOICE;
+      if(data[0][0] == 'NameAscDsc') type = BID_TYPE.GOAL;
+      data = data.slice(1)
       data = data.map(function(d){
         var payload = {
           name: d[0],
@@ -73,7 +75,11 @@ var BID_TYPE = {
   CHOICE: 'CHOICE',
 }
 
+// getBidDetail(4539, function(d){});
+// getBidDetail(4540, function(d){});
+// getBidDetail(4826, function(d){});
+// getBidDetail(4792, function(d){});
 getBidDetail(4539, console.log);
 getBidDetail(4540, console.log);
 getBidDetail(4826, console.log);
-
+getBidDetail(4792, console.log);
