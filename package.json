@@ -1,0 +1,32 @@
+{
+  "name": "gdq_tracker_scraper",
+  "version": "0.0.1",
+  "description": "Scraper for the GDQ Donation Tracker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcongdon/gdq_tracker_scraper.git"
+  },
+  "keywords": [
+    "games",
+    "done",
+    "quick",
+    "speed",
+    "run",
+    "speedrun",
+    "sgdq",
+    "agdq"
+  ],
+  "author": "Benjamin Congdon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bcongdon/gdq_tracker_scraper/issues"
+  },
+  "homepage": "https://github.com/bcongdon/gdq_tracker_scraper#readme",
+  "dependencies": {
+    "scraperjs": "^1.2.0"
+  }
+}
