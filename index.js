@@ -5,7 +5,7 @@ var exports = module.exports;
 
 function parseAmount(amt) {
   if(!amt) return 0
-  return parseFloat(amt.slice(1).replace(",",""));
+  return parseFloat(amt.replace("$","").replace(",",""));
 }
 
 exports.getBidIndex = function(event) {
@@ -56,7 +56,7 @@ exports.getBidDetail = function(ref) {
         data = data.slice(1)
         data = data.map(function(d){
           var payload = {
-            name: d[0],
+            name: d[0].trim(),
             amount: parseAmount(d[2])
           }
           if(d[1]) payload.date = Date.parse(d[1]);
@@ -87,4 +87,3 @@ exports.BID_TYPE = {
   GOAL: 'GOAL',
   CHOICE: 'CHOICE',
 }
-
